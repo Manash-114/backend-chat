@@ -1,7 +1,7 @@
 package com.whatsapp.controller;
 
 
-import com.whatsapp.modal.User;
+import com.whatsapp.model.User;
 import com.whatsapp.payload.ApiResponse;
 import com.whatsapp.request.UpdateUserRequest;
 import com.whatsapp.services.UserService;

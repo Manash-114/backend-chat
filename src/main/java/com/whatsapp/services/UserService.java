@@ -1,9 +1,8 @@
 package com.whatsapp.services;
 
 import com.whatsapp.exception.UserException;
-import com.whatsapp.modal.User;
+import com.whatsapp.model.User;
 import com.whatsapp.request.UpdateUserRequest;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

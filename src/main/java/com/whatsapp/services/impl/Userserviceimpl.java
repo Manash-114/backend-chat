@@ -2,11 +2,10 @@ package com.whatsapp.services.impl;
 
 import com.whatsapp.config.TokenProvider;
 import com.whatsapp.exception.UserException;
-import com.whatsapp.modal.User;
+import com.whatsapp.model.User;
 import com.whatsapp.repository.UserRepository;
 import com.whatsapp.request.UpdateUserRequest;
 import com.whatsapp.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
