@@ -44,8 +44,8 @@ public class AuthController {
 
         User isUser = userRepository.findByEmail(email);
 
-        if(isUser !=null){
-            throw new UserException("email is used with another account"+email);
+        if(isUser != null){
+            throw new UserException("email is used with another account "+email);
         }
 
         User createdUser = new User();
@@ -68,6 +68,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest request) throws Exception{
         String email = request.getEmail();
         String password = request.getPassword();
+
         Authentication authentication = authenticate(email,password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
