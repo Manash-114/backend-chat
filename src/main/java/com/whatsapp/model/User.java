@@ -2,10 +2,7 @@ package com.whatsapp.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 @Getter
@@ -14,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_table")
+@EqualsAndHashCode
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

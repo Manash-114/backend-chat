@@ -26,6 +26,12 @@ public class GlobalException {
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ChatException.class)
+    public ResponseEntity<ErrorDetails> chatExceptionHandler(ChatException e , WebRequest request){
+        ErrorDetails errorDetails = new ErrorDetails(e.getMessage(),request.getDescription(false), LocalDateTime.now());
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(NoEndPointExcepton.class)
     public ResponseEntity<ErrorDetails> noEndpointHandlerException(NoEndPointExcepton e , WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails("End Point not found",e.getMessage(), LocalDateTime.now());
