@@ -32,14 +32,12 @@ public class MessageServiceImpl implements MessageService {
     public Message sendMessage(SendMessageRequest req) throws UserException, ChatException {
         User user = userService.findUserById(req.getUserId());
         Chat chatById = chatService.findChatById(req.getChatId());
-
         Message message = new Message();
         message.setChat(chatById);
         message.setUser(user);
         message.setContent(req.getContent());
         message.setTimestamp(LocalDateTime.now());
-
-        return message;
+        return messageRepository.save(message);
     }
 
     @Override
@@ -67,8 +65,8 @@ public class MessageServiceImpl implements MessageService {
 
         if(message.getUser().getId().equals(reqUser.getId())){
             messageRepository.deleteById(messageId);
-            return "message delete successfully";
-        }
-        throw new UserException("You are not allow to this message");
+            return "message deleted successfully";
+        }else
+            throw new UserException("You are not allow to this message");
     }
 }
