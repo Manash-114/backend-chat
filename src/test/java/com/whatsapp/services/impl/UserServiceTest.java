@@ -1,4 +1,4 @@
-package com.whatsapp.services;
+package com.whatsapp.services.impl;
 
 import com.whatsapp.config.TokenProvider;
 import com.whatsapp.model.User;
@@ -34,13 +34,15 @@ class UserServiceTest {
 
     private User user;
     private List<User> users = new ArrayList<>();
+    private AutoCloseable autoCloseable;
     @BeforeEach
     void setUp(){
-        MockitoAnnotations.openMocks(this);
+        autoCloseable = MockitoAnnotations.openMocks(this);
         user = User.builder().id(101).fullName("Manash Jyoti Handique").build();
     }
     @AfterEach
-    void tearDown(){
+    void tearDown() throws Exception{
+        autoCloseable.close();
         user = null;
     }
     @Test
@@ -57,7 +59,7 @@ class UserServiceTest {
         String userEmail = "user@example.com";
         User mockUser = new User();
         mockUser.setId(1);
-        mockUser.setFullName("John Doe");
+        mockUser.setFullName("manash jyoti handique");
         mockUser.setEmail(userEmail);
 
         when(tokenProvider.getEmailFromToken(jwtToken)).thenReturn(userEmail);

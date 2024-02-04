@@ -1,4 +1,4 @@
-package com.whatsapp.services;
+package com.whatsapp.services.impl;
 
 import com.whatsapp.exception.UserException;
 import com.whatsapp.model.Chat;
@@ -6,6 +6,7 @@ import com.whatsapp.model.User;
 import com.whatsapp.repository.ChatRepository;
 import com.whatsapp.repository.UserRepository;
 import com.whatsapp.request.GroupChatRequest;
+import com.whatsapp.services.UserService;
 import com.whatsapp.services.impl.ChatServiceImpl;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.AfterEach;
