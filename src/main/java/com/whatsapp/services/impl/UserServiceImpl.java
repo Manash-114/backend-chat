@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class Userserviceimpl implements UserService {
+public class UserServiceImpl implements UserService {
 
 
     private UserRepository userRepository;
-
-
     private TokenProvider tokenProvider;
 
-    public Userserviceimpl(UserRepository userRepository,TokenProvider tokenProvider){
+    public UserServiceImpl(UserRepository userRepository, TokenProvider tokenProvider){
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
     }
+
+
     @Override
     public User findUserById(Integer id) throws UserException{
         User user = userRepository.findById(id).orElseThrow(() -> new UserException("User not found with id " + id));

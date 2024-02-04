@@ -8,6 +8,9 @@ import com.whatsapp.model.User;
 import com.whatsapp.repository.ChatRepository;
 import com.whatsapp.services.ChatService;
 import com.whatsapp.services.UserService;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,22 +25,21 @@ public class ChatServiceImpl implements ChatService {
         this.chatRepository = chatRepository;
         this.userService = userService;
     }
+
     @Override
     public Chat createChat(User sender, Integer receiver) throws UserException {
 
         User user2 = userService.findUserById(receiver);
-
         Chat isChatExists = chatRepository.findSingleChatByUserIds(sender, user2);
         if( isChatExists != null)
             return isChatExists;
-
         //create new Chat
         Chat chat = new Chat();
         chat.setCreatedBy(sender);
         chat.getUsers().add(sender);
         chat.getUsers().add(user2);
         chat.setGroup(false);
-        return chat;
+        return chatRepository.save(chat);
     }
 
     @Override
@@ -55,17 +57,21 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Chat createGroup(GroupChatRequest req, User reqUser) throws UserException {
+
         Chat chatGroup = new Chat();
         chatGroup.setGroup(true);
         chatGroup.setChatImage(req.getGroupImage());
         chatGroup.setChatName(req.getGroupName());
         chatGroup.setCreatedBy(reqUser);
         chatGroup.getAdmin().add(reqUser);
+
         for(Integer userId : req.getUserId()){
+
             User userById = userService.findUserById(userId);
             chatGroup.getUsers().add(userById);
         }
-        return chatGroup;
+
+        return chatRepository.save(chatGroup);
     }
 
     @Override
@@ -88,7 +94,7 @@ public class ChatServiceImpl implements ChatService {
 
         Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new ChatException("Chat not found"));
         boolean isMember = chat.getUsers().contains(reqUser);
-        if(isMember){
+        if(isMember || chat.getAdmin().contains(reqUser)){
             chat.setChatName(groupName);
             chatRepository.save(chat);
             return chat;
@@ -105,11 +111,11 @@ public class ChatServiceImpl implements ChatService {
 
         boolean isAdmin = chat.getAdmin().contains(reqUser);
 
+        if(!chat.getUsers().contains(userById)){
+           throw new UserException("User not found with "+userId);
+        }
 
         if(isAdmin){
-            chat.getUsers().remove(userById);
-            return chatRepository.save(chat);
-        }else if(chat.getUsers().contains(userById)){
             chat.getUsers().remove(userById);
             return chatRepository.save(chat);
         }
@@ -118,10 +124,11 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void deleteChat(Integer chatId, User user) throws ChatException, UserException {
+    public void deleteChat(Integer chatId, User reqUser) throws ChatException, UserException {
         Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new ChatException("Chat not found"));
-        if(chat.getAdmin().contains(user)){
+        if(chat.getAdmin().contains(reqUser)){
             chatRepository.delete(chat);
-        }
+        }else
+        throw new UserException("You cannot remove this chat");
     }
 }
