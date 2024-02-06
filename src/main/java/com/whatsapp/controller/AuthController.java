@@ -66,27 +66,24 @@ public class AuthController {
 
     @GetMapping("/signin")
     public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest request) throws Exception{
+
         String email = request.getEmail();
         String password = request.getPassword();
 
         Authentication authentication = authenticate(email,password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String token = tokenProvider.generateToken(authentication);
         return new ResponseEntity<>(new AuthResponse(token,true), HttpStatus.ACCEPTED);
     }
 
     public Authentication authenticate(String username,String password){
         UserDetails userDetails = customUserService.loadUserByUsername(username);
-
         if(userDetails == null){
             throw new BadCredentialsException("invalid username");
         }
-
         if(!passwordEncoder.matches(password,userDetails.getPassword())){
             throw new BadCredentialsException("invalid password");
         }
-
         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
     }
 }

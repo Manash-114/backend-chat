@@ -41,8 +41,5 @@ public class UserController {
         return new ResponseEntity<>(new ApiResponse("user updated successfully",true),HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/about")
-    public String about(){
-        return "abouts us pageg";
-    }
+
 }
