@@ -26,24 +26,22 @@ public class ChatController {
     }
 
     @PostMapping("/single")
-    public ResponseEntity<Chat> createChatHandler(@RequestBody SingleChatReq singleChat , @RequestHeader("Authorization") String jwtToken) throws Exception {
+    public ResponseEntity<Chat> createSingleChatHandler(@RequestBody SingleChatReq singleChat , @RequestHeader("Authorization") String jwtToken) throws Exception {
         User reqUser = userService.findUserProfile(jwtToken);
         Chat chat = chatService.createChat(reqUser, singleChat.getUserId());
         return new ResponseEntity<>(chat, HttpStatus.CREATED);
     }
 
     @PostMapping("/group")
-    public ResponseEntity<Chat> createGropuHandler(@RequestBody GroupChatRequest groupChatRequest , @RequestHeader("Authorization") String jwtToken) throws Exception {
+    public ResponseEntity<Chat> createGroupHandler(@RequestBody GroupChatRequest groupChatRequest , @RequestHeader("Authorization") String jwtToken) throws Exception {
 
         User reqUser = userService.findUserProfile(jwtToken);
-
         Chat group = chatService.createGroup(groupChatRequest, reqUser);
         return new ResponseEntity<>(group, HttpStatus.CREATED);
     }
 
     @GetMapping("/{chatId}")
     public ResponseEntity<Chat> findChatByIdHandler(@PathVariable Integer chatId , @RequestHeader("Authorization") String jwtToken) throws Exception {
-
         Chat chatById = chatService.findChatById(chatId);
         return new ResponseEntity<>(chatById, HttpStatus.OK);
     }
